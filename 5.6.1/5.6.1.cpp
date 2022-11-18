@@ -2,33 +2,36 @@
 
 #include <string>
 #include <map>
-#include <utility>
 #include <set>
+#include <vector>
+
+#include <utility>
 #include <algorithm>
 
+bool predicate(std::pair<char, int> &a, std::pair<char, int> &b) {
+    return a.second > b.second;
+}
+
 int main()
-{    
-    std::map<char,int> text ;
+{
+
+    std::map<char, int> text;
     std::string a;
 
     std::cout << "[IN]: ";
     std::getline(std::cin, a);
-    
+
     for (const auto& elem : a) {
         ++text[elem];
     }
-    
-    std::map<int, char> reverse_text;
-    for (std::pair<char, int> pair : text) {
-        reverse_text[pair.second] = pair.first;
-    }
-    
-    auto r_i = reverse_text.rbegin();
-    
+
+    std::vector<std::pair<char, int>> symb_freq(text.begin(),text.end());
+
+    std::sort(symb_freq.begin(), symb_freq.end(), predicate);
+
     std::cout << "[OUT]:\n";
-    while (r_i!= reverse_text.rend())    {
-        std::cout << r_i->second << ": " << r_i->first << '\n';
-        r_i++;
+    for (const auto& [symbol, freq] : symb_freq) {
+        std::cout << symbol << ": " << freq << '\n';
     }
     
     return 0;
